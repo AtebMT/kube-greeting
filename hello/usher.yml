@@ -1,0 +1,59 @@
+version: '2'
+
+vars:
+  version:
+  service_image_name: kube-hello
+  registry: docker-registry.dun.fh
+  service_folder: .
+
+include:
+  - from: git+ssh://git@github.com:findmypast/usher_shared_tasks.git
+    name: shared_tasks as global
+    import:
+      - docker
+
+tasks:
+  create_pod:
+    description: Create the pod in K8s
+    do: shell
+    command: kubectl create -f ./hello-pod.yaml --save-config
+
+  delete_pod:
+    description: Delete the pod from K8s
+    do: shell
+    command: kubectl delete -f ./hello-pod.yaml
+
+  create_service:
+    description: Create a service for the service pod
+    do: shell
+    command: kubectl create -f ./hello-service.yaml --save-config
+
+  delete_service:
+    description: Delete a service from the service pod
+    do: shell
+    command: kubectl delete -f ./hello-service.yaml
+
+  create_deployment:
+    description: Creates a kubernetes deployment to manage pod replicas and pod updates
+    do: shell
+    command: kubectl create -f hello-deployment.yml --save-config --record
+
+  update_deployment:
+    description: Creates a kubernetes deployment to manage pod replicas and pod updates
+    do: shell
+    command: kubectl apply -f hello-deployment.yml
+
+  delete_deployment:
+    description: Removes a kubernetes deployment
+    do: shell
+    command: kubectl delete -f hello-deployment.yml
+
+  publish:
+    do: sequence
+    description: Builds a tagged image and pushes to the registry. Requires the 'version' parameter to be passed on the command line
+    service_name: <%=service_image_name%>
+    actions:
+      - do: global.docker.create_image
+      - do: global.docker.push_image
+      - do: shell
+        command: echo "Don't forget to update the version tag to <%=version%> in the 'service-pod.yaml' file!!"

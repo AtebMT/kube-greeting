@@ -1,0 +1,33 @@
+version: '2'
+
+
+tasks:
+  create_cluster_role:
+    description: Create the clsuter role for Traefik
+    do: shell
+    command: kubectl apply -f https://raw.githubusercontent.com/containous/traefik/master/examples/k8s/traefik-rbac.yaml
+
+  delete_cluster_role:
+    description: Remove the clsuter role from K8s
+    do: shell
+    command: kubectl delete -f https://raw.githubusercontent.com/containous/traefik/master/examples/k8s/traefik-rbac.yaml
+
+  create_traefik:
+    description: Create traefik
+    do: shell
+    command: kubectl apply -f deployment.yml
+
+  delete_traefik:
+    description: Delete traefik
+    do: shell
+    command: kubectl delete -f deployment.yml
+
+  create_traefik_web_ui:
+    description: Create traefik
+    do: shell
+    command: kubectl apply -f ./web-ui-deployment.yml
+
+  delete_traefik_web_ui:
+    description: Delete traefik
+    do: shell
+    command: kubectl delete -f ./web-ui-deployment.yml

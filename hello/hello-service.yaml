@@ -1,0 +1,13 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: kube-hello-service
+spec:
+  type: NodePort
+  selector:
+    app: kube-hello-pod
+    environment: dev
+  ports:
+  - protocol: TCP
+    port: 6002
+    targetPort: 4000

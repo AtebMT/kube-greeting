@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: kube-greeting-deployment
+  labels:
+    app: kube-greeting
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: kube-greeting-pod
+      environment: dev
+  strategy:
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 1
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app: kube-greeting-pod
+        environment: dev
+        colour: black
+    spec:
+      containers:
+      - name: kube-greeting
+        image: docker-registry.dun.fh/findmypast/kube-greeting:kubet1.3
+        command: ['node', 'server.js']
+        ports:
+          - containerPort: 3000

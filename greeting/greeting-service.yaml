@@ -1,0 +1,13 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: kube-greeting-service
+spec:
+  type: NodePort
+  selector:
+    app: kube-greeting-pod
+    environment: dev
+  ports:
+  - protocol: TCP
+    port: 6001
+    targetPort: 3000

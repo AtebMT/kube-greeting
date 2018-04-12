@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: kube-hello-pod
+  labels:
+    app: kube-hello-pod
+    environment: dev
+    colour: black
+spec:
+  containers:
+  - name: kube-hello
+    image: docker-registry.dun.fh/findmypast/kube-hello:kubet1.1 
+    command: ['node', 'server.js']
+    ports:
+      - containerPort: 4000
