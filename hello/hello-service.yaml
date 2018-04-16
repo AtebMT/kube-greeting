@@ -11,3 +11,4 @@ spec:
   - protocol: TCP
     port: 6002
     targetPort: 4000
+    name: http

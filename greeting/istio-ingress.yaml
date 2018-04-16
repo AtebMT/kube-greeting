@@ -1,0 +1,14 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: kube-greeting-istio-ingress
+  annotations:
+    kubernetes.io/ingress.class: "istio"
+spec:
+  rules:
+  - host: greeting.service.dun.fh
+    http:
+      paths:
+      - backend:
+          serviceName: greeting
+          servicePort: 6001
